@@ -71,7 +71,7 @@ terminal TRUE, FALSE, CHAR, INTEGER, STRING;
 nonterminal int_val, rat_val, float_val, dict_val, seq_val, int_number;
 
 //Dict/SEQ components
-nonterminal dict_obj,dict_content,seq_content, len_property, index;
+nonterminal dict_obj,dict_content,seq_content, len_property, index, slice;
 
 // Non terminal blocks
 nonterminal statements, statement, top_level;
@@ -186,6 +186,7 @@ all_types_val ::= TRUE
                 | seq_val
                 | int_number
                 | index
+                | slice
                 | STRING
                 | IDENTIFIER;
 
@@ -218,6 +219,10 @@ seq_content ::=  all_types_val
 len_property ::= IDENTIFIER DOT LEN;
 //index
 index ::= IDENTIFIER LAGRA int_number RAGRA;
+//slice
+slice ::= IDENTIFIER LAGRA number COLON int_number RAGRA
+        | IDENTIFIER LAGRA COLON int_number RAGRA
+        | IDENTIFIER LAGRA number COLON RAGRA;
 
 // TODO: add len as int for operations
 // TODO: add a[index] for dictionnary and sequence
