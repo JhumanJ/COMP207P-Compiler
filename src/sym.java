@@ -9,10 +9,10 @@ public class sym {
   public static final int SEQ = 36;
   public static final int RCROCHET = 13;
   public static final int MULT = 8;
-  public static final int CHAR = 51;
+  public static final int CHAR = 52;
   public static final int LBRA = 31;
   public static final int IMPL = 22;
-  public static final int INTEGER = 52;
+  public static final int INTEGER = 53;
   public static final int EXCLAM = 19;
   public static final int LPAREN = 28;
   public static final int EXPO = 25;
@@ -27,23 +27,24 @@ public class sym {
   public static final int COMMA = 14;
   public static final int SEMICOL = 5;
   public static final int DIV = 9;
-  public static final int TYPE_INT = 46;
+  public static final int TYPE_INT = 47;
   public static final int PLUS = 6;
   public static final int MAIN = 33;
   public static final int DOT = 11;
   public static final int EOF = 0;
+  public static final int RETURN = 44;
   public static final int EQUAL = 4;
-  public static final int TRUE = 49;
+  public static final int TRUE = 50;
   public static final int error = 1;
   public static final int INFEQ = 26;
   public static final int LCROCHET = 12;
   public static final int RBRA = 30;
   public static final int RAGRA = 18;
   public static final int FDEF = 41;
-  public static final int TYPE_RAT = 48;
-  public static final int TYPE_FLOAT = 47;
+  public static final int TYPE_RAT = 49;
+  public static final int TYPE_FLOAT = 48;
   public static final int EQ = 23;
-  public static final int TYPE_CHAR = 45;
+  public static final int TYPE_CHAR = 46;
   public static final int TOP = 37;
   public static final int COLON = 15;
   public static final int DICT = 35;
@@ -51,13 +52,13 @@ public class sym {
   public static final int DOUBLE_COLON = 16;
   public static final int LET = 3;
   public static final int UNDERSCORE = 10;
-  public static final int STRING = 53;
+  public static final int STRING = 54;
   public static final int LEN = 38;
   public static final int QUESTION = 27;
   public static final int ALIAS = 42;
   public static final int DIFF = 24;
-  public static final int FALSE = 50;
-  public static final int TYPE_BOOL = 44;
+  public static final int FALSE = 51;
+  public static final int TYPE_BOOL = 45;
   public static final int PRINT = 34;
   public static final int IDENTIFIER = 2;
   public static final String[] terminalNames = new String[] {
@@ -105,6 +106,7 @@ public class sym {
   "FDEF",
   "ALIAS",
   "READ",
+  "RETURN",
   "TYPE_BOOL",
   "TYPE_CHAR",
   "TYPE_INT",

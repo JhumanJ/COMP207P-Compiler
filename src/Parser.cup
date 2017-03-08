@@ -60,7 +60,7 @@ terminal LPAREN, RPAREN, RBRA, LBRA;
 terminal BADCHAR;
 
 // Keywords
-terminal MAIN, PRINT, DICT,SEQ, TOP, LEN, IN, TDEF, FDEF, ALIAS, READ;
+terminal MAIN, PRINT, DICT,SEQ, TOP, LEN, IN, TDEF, FDEF, ALIAS, READ, RETURN;
 
 //Types Def
 terminal TYPE_BOOL,TYPE_CHAR,TYPE_INT, TYPE_FLOAT,TYPE_RAT;
@@ -93,7 +93,7 @@ nonterminal type_definition, alias_definition, func_definition, func_call;
 nonterminal exp,exp_content, comparison_operators_num_bool, comparison_operators_num, numeric_operators, boolean_operators, binary_operators;
 
 // TODO:Delete test
-nonterminal test, var_assigment, read_var, print_var;
+nonterminal test, var_assigment, read_var, print_var, return;
 
 
 
@@ -101,7 +101,7 @@ precedence left PLUS, MINUS;
 precedence left DIV, MULT;
 
 // TODO:Delete test
-test ::= statement;
+test ::= statements;
 
 
 //top_level ::= statements:ss {:
@@ -365,11 +365,15 @@ read_var ::= READ identifiers SEMICOL;
 
 print_var ::= PRINT all_types_val SEMICOL;
 
+return ::= RETURN all_types_val SEMICOL
+         | RETURN exp SEMICOL;
+
 
 statement ::= exp SEMICOL
             | var_assigment
             | read_var
-            | print_var;
+            | print_var
+            | return;
 
 statements ::= statements statement
-              | /* wallouh  */;
+              | statement;

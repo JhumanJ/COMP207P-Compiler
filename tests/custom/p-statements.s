@@ -1,2 +1,4 @@
 print myvar;
-print test;
+read var ;
+print expression ;
+? expression ? functionId ( expression ) ;

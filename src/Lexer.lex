@@ -105,6 +105,7 @@ string = "\"" {character}* "\""
   "print"       { return symbol(sym.PRINT);     }
   "dict"        { return symbol(sym.DICT);}
   "len"         { return symbol(sym.LEN);}
+  "return"         { return symbol(sym.RETURN);}
 
 
 // Types
@@ -129,7 +130,6 @@ string = "\"" {character}* "\""
   {Identifier}  { return symbol(sym.IDENTIFIER, yytext());   }
   {Integer}     { return symbol(sym.INTEGER,Integer.parseInt(yytext())); }
 
-  {Whitespace}  { /* do nothing */               }
   ":"           { return symbol(sym.COLON);      }
   "::"           { return symbol(sym.DOUBLE_COLON);      }
   ":="          { return symbol(sym.EQUAL);      }
@@ -168,18 +168,12 @@ string = "\"" {character}* "\""
 
 
   {char}        { return symbol(sym.CHAR);       }
-  {string}        { return symbol(sym.STRING);       }
+  {string}      { return symbol(sym.STRING);     }
 
-//  \'            { string.setLength(0); yybegin(CHAR); }
+  {Comment}     { /* do nothing */               }
+  {Whitespace}  { /* do nothing */               }
+
 }
-
-//<CHAR> {
-//  \'                             { yybegin(YYINITIAL);
-//                                   return symbol(sym.CHAR,
-//                                   string.toString()); }
-//  {character}                    { string.append( yytext() ); }
-//  [^]                            { throw new Error("Character must be closed with a '. Cant be void:" + yytext()); }
-//}
 
 [^]  {
   System.out.println("file:" + (yyline+1) +
