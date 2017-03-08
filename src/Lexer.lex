@@ -70,7 +70,7 @@ import java_cup.runtime.*;
 %}
 
 LineTerminator = \r|\n|\r\n
-Whitespace = {LineTerminator}|" "|"\t"
+Whitespace = {LineTerminator} | " " | "\t"
 InputCharacter = [^LineTerminator]
 
 Letter = [a-zA-Z]
@@ -106,6 +106,7 @@ string = "\"" {character}* "\""
   "dict"        { return symbol(sym.DICT);}
   "len"         { return symbol(sym.LEN);}
 
+
 // Types
   "bool"        { return symbol(sym.TYPE_BOOL);}
   "int"         { return symbol(sym.TYPE_INT);}
@@ -114,6 +115,12 @@ string = "\"" {character}* "\""
   "float"       { return symbol(sym.TYPE_FLOAT);}
   "top"         { return symbol(sym.TOP);}
   "seq"         { return symbol(sym.SEQ);}
+  "in"          { return symbol(sym.IN);}
+  "tdef"        { return symbol(sym.TDEF);}
+  "fdef"        { return symbol(sym.FDEF);}
+  "alias"       { return symbol(sym.ALIAS);}
+  "read"       { return symbol(sym.READ);}
+
 
 
 
@@ -124,14 +131,27 @@ string = "\"" {character}* "\""
 
   {Whitespace}  { /* do nothing */               }
   ":"           { return symbol(sym.COLON);      }
+  "::"           { return symbol(sym.DOUBLE_COLON);      }
   ":="          { return symbol(sym.EQUAL);      }
   ";"           { return symbol(sym.SEMICOL);    }
   ","           { return symbol(sym.COMMA);    }
+  "!"           { return symbol(sym.EXCLAM);    }
+  "&&"          { return symbol(sym.AND);    }
+  "||"          { return symbol(sym.OR);    }
+  "=>"          { return symbol(sym.IMPL);    }
+  "="           { return symbol(sym.EQ);    }
+  "!="           { return symbol(sym.DIFF);    }
+  "<="           { return symbol(sym.INFEQ);        }
+  "?"           { return symbol(sym.QUESTION);    }
+
+
 
   "+"           { return symbol(sym.PLUS);       }
   "-"           { return symbol(sym.MINUS);      }
   "*"           { return symbol(sym.MULT);       }
   "/"           { return symbol(sym.DIV);        }
+  "^"           { return symbol(sym.EXPO);        }
+
   "("           { return symbol(sym.LPAREN);     }
   ")"           { return symbol(sym.RPAREN);     }
   "{"           { return symbol(sym.LBRA);       }
