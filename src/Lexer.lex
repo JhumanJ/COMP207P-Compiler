@@ -82,9 +82,9 @@ Integer = (0|[1-9]{Digit}*)
  /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment}
 TraditionalComment   = "/#" [^#] ~"#/" | "/#" "#"+ "/"
-EndOfLineComment     = "#" {InputCharacter}* {LineTerminator}?
+EndOfLineComment     = "#" [^#]* {LineTerminator}?
 
-/* character TODO: is \n a char?  */
+/* character  */
 character = [:jletterdigit:] | \p{Punctuation}| " "
 char = "'"{character}"'"
 string = "\"" {character}* "\""
@@ -107,6 +107,20 @@ string = "\"" {character}* "\""
   "len"         { return symbol(sym.LEN);}
   "return"         { return symbol(sym.RETURN);}
 
+  "in"          { return symbol(sym.IN);}
+  "tdef"        { return symbol(sym.TDEF);}
+  "fdef"        { return symbol(sym.FDEF);}
+  "alias"       { return symbol(sym.ALIAS);}
+  "read"       { return symbol(sym.READ);}
+  "loop"       { return symbol(sym.LOOP);}
+  "pool"       { return symbol(sym.POOL);}
+  "break"       { return symbol(sym.BREAK);}
+  "if"       { return symbol(sym.IF);}
+  "then"       { return symbol(sym.THEN);}
+  "else"       { return symbol(sym.ELSE);}
+  "fi"       { return symbol(sym.FI);}
+
+
 
 // Types
   "bool"        { return symbol(sym.TYPE_BOOL);}
@@ -116,13 +130,6 @@ string = "\"" {character}* "\""
   "float"       { return symbol(sym.TYPE_FLOAT);}
   "top"         { return symbol(sym.TOP);}
   "seq"         { return symbol(sym.SEQ);}
-  "in"          { return symbol(sym.IN);}
-  "tdef"        { return symbol(sym.TDEF);}
-  "fdef"        { return symbol(sym.FDEF);}
-  "alias"       { return symbol(sym.ALIAS);}
-  "read"       { return symbol(sym.READ);}
-
-
 
 
 

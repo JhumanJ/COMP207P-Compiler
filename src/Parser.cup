@@ -57,10 +57,11 @@ parser code {:
 // Do something with ILLEGAL_CHARARCTER or drop it.
 terminal IDENTIFIER, LET, EQUAL, SEMICOL, PLUS, MINUS, MULT, DIV, UNDERSCORE, DOT, LCROCHET, RCROCHET, COMMA, COLON, DOUBLE_COLON, LAGRA, RAGRA, EXCLAM, AND, OR, IMPL, EQ, DIFF, EXPO, INFEQ, QUESTION;
 terminal LPAREN, RPAREN, RBRA, LBRA;
-terminal BADCHAR;
+terminal BADCHAR, LOOP, POOL, IF, THEN, ELSE, FI, BREAK;
 
 // Keywords
 terminal MAIN, PRINT, DICT,SEQ, TOP, LEN, IN, TDEF, FDEF, ALIAS, READ, RETURN;
+
 
 //Types Def
 terminal TYPE_BOOL,TYPE_CHAR,TYPE_INT, TYPE_FLOAT,TYPE_RAT;
@@ -93,7 +94,7 @@ nonterminal type_definition, alias_definition, func_definition, func_call;
 nonterminal exp,exp_content, comparison_operators_num_bool, comparison_operators_num, numeric_operators, boolean_operators, binary_operators;
 
 // TODO:Delete test
-nonterminal test, var_assigment, read_var, print_var, return;
+nonterminal test, var_assigment, read_var, print_var, return, loop, break,if_statement, var_init;
 
 
 
@@ -307,6 +308,7 @@ type_definition ::= TDEF IDENTIFIER LBRA declaration_list RBRA SEMICOL;
 
 alias_definition ::= ALIAS all_types all_types SEMICOL;
 
+//TODO: add to global statements
 func_definition ::= FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA SEMICOL
                 | FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA COLON all_types SEMICOL;
 
@@ -359,21 +361,44 @@ binary_operators ::= comparison_operators_num_bool
                     | numeric_operators
                     | boolean_operators;
 
+// Assigment, var init, assigment....
+
 var_assigment ::= identifiers EQUAL all_types_val SEMICOL;
+
+var_init ::= identifiers COLON all_types EQUAL parameters_list SEMICOL;
 
 read_var ::= READ identifiers SEMICOL;
 
-print_var ::= PRINT all_types_val SEMICOL;
+print_var ::= PRINT all_types_val SEMICOL
+            | PRINT exp SEMICOL;
 
 return ::= RETURN all_types_val SEMICOL
          | RETURN exp SEMICOL;
 
+//Flow handling
+
+loop ::= LOOP statements POOL;
+
+break ::= BREAK SEMICOL
+        | BREAK all_types_val SEMICOL;
+
+if_statement ::= IF LPAREN exp RPAREN THEN statements FI
+               | IF LPAREN exp RPAREN THEN statements ELSE statements FI;
+
+
+//Statements
+
+// TODO: create statements containing breaks to make sure beaks only are in loops
 
 statement ::= exp SEMICOL
+            | var_init
             | var_assigment
             | read_var
             | print_var
-            | return;
+            | return
+            | loop
+            | break
+            | if_statement;
 
 statements ::= statements statement
               | statement;
