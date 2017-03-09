@@ -4,4 +4,4 @@ main {
   z:int := 7;
   x := y := z; # Inspired by Reece
   return z;
-} : int;
+};

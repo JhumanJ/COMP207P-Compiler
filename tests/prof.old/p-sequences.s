@@ -10,10 +10,10 @@ main {
   anotherlist:seq<top> := [s1] :: [s2] :: newlist;
   thirdlist:seq<top> := l2[:-2] :: l2[3:];
 
-  b:bool := len(thirdlist) = len(l2);
+  b:bool := thirdlist.len = l2.len;
 
 
-  if (len(newlist) <= len(anotherlist)) then
+  if (newlist.len <= anotherlist.len) then
      newlist := newlist + anotherlist[0];
   else 
      nelist := newlist - newlist[0];

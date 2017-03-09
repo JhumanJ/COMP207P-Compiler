@@ -1,6 +1,8 @@
-alias seq<char> string;
+s1:string := "Alice in Wonderland";
+s2:string := "Gilgamesh";
+s3:string := "One Thousand and One Nights";
 
-fdef fred (s:string, x:int) {
+main {
   key:string := "ic";  
   books:seq<string> := [s1,s2,s3];
 
@@ -14,11 +16,9 @@ fdef fred (s:string, x:int) {
      i := i + 1;
   od
 
-  return i;
-} : int;
+  return;
+};
 
 fdef alice () {
   return 5;
 } : int;
-
-#main { print "fred"; };

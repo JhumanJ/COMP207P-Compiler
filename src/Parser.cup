@@ -204,6 +204,9 @@ all_types_val ::= CHAR
                 | identifiers;
 // Réccursion identifier
 
+
+
+
 // Dict
 type_dict ::= DICT LCROCHET all_types COMMA all_types RCROCHET
             | DICT LCROCHET TOP COMMA all_types RCROCHET

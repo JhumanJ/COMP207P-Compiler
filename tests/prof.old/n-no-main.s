@@ -8,11 +8,17 @@ fdef fred (s:string, x:int) {
   i:int := 0;
   tmp:string;
 
-  while (i<len(books)) do 
-     tmp := books[i];
-     if (key in tmp) then found := T; fi
-     i := i + 1;
-  od
+  loop 
+    if(i< books.len) then
+      break;
+    fi
+    
+    tmp := books[i];
+    if (key in tmp) then 
+      found := T; 
+    fi
+    i := i + 1;
+  pool
 
   return i;
 } : int;
@@ -20,5 +26,3 @@ fdef fred (s:string, x:int) {
 fdef alice () {
   return 5;
 } : int;
-
-#main { print "fred"; };

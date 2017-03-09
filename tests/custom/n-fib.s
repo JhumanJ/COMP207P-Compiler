@@ -3,12 +3,14 @@ main {
 	return;
 };
 
-fdef fibonacci( pos : int ) { 
-	if (pos = -1) then
+fdef fibonacci(int pos) : int { 
+	if (pos = -1) {
 		return 0;
-	fi
-	if (pos = 0) then
+	}
+	if (pos = 0) {
 		return 1;
-	fi	
+	}
 	return fibonacci(pos-1) + fibonacci(pos-2);
-} ;
+}
+
+
