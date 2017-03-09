@@ -93,16 +93,21 @@ nonterminal type_definition, alias_definition, func_definition, func_call;
 
 nonterminal exp,exp_content, comparison_operators_num_bool, comparison_operators_num, numeric_operators, boolean_operators, binary_operators;
 
-// TODO:Delete test
-nonterminal test, var_assigment, read_var, print_var, return, loop, break,if_statement, var_init;
-
-
+nonterminal global_code, var_assigment, read_var, print_var, return, loop, break,if_statement, var_init, main_statement, not_main_statements, not_main_statement;
 
 precedence left PLUS, MINUS;
 precedence left DIV, MULT;
 
-// TODO:Delete test
-test ::= statements;
+global_code ::= main_statement
+             | main_statement not_main_statements
+             | not_main_statements main_statement
+             | not_main_statements main_statement not_main_statements;
+
+not_main_statements ::= not_main_statement not_main_statements
+                    | not_main_statement ;
+
+not_main_statement ::= func_definition
+                    | var_init; //Everything allowed out of main
 
 
 //top_level ::= statements:ss {:
@@ -271,8 +276,8 @@ seq_temp ::= LAGRA seq_content RAGRA
            | slice
            ;
 
-seq_val ::= seq_temp
-         | seq_concat;
+seq_val ::= seq_temp;
+        // | seq_concat;
 
 seq_content ::=  all_types_val
             | all_types_val COMMA seq_content
@@ -294,7 +299,9 @@ slice ::= IDENTIFIER LAGRA number COLON int_number RAGRA
         | IDENTIFIER LAGRA COLON int_number RAGRA
         | IDENTIFIER LAGRA number COLON RAGRA;
 //concatenation
-seq_concat ::= seq_temp DOUBLE_COLON seq_temp;
+seq_concat ::= seq_temp DOUBLE_COLON seq_temp
+            | identifiers DOUBLE_COLON seq_temp;
+
 
 identifiers ::= IDENTIFIER
             | IDENTIFIER DOT identifiers;
@@ -314,9 +321,9 @@ func_definition ::= FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statemen
                 | FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA COLON all_types SEMICOL;
 
 parameters_list::= all_types_val
-                | func_call
+                | exp
                 | all_types_val COMMA parameters_list
-                | func_call COMMA parameters_list;
+                | exp COMMA parameters_list;
 
 func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN RPAREN
            | QUESTION identifiers QUESTION IDENTIFIER LPAREN RPAREN
@@ -326,17 +333,22 @@ func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN RPAREN
 //------------ 2.2 ---------
 
 //TODO: add more expressions (concat + in property)
-exp::=   exp_content binary_operators exp_content
+exp ::=   exp_content binary_operators exp_content
        | exp_content binary_operators exp
        | EXCLAM exp
        | LPAREN exp RPAREN
        | func_call
+       | exp_content DOUBLE_COLON exp_content
+       | exp_content DOUBLE_COLON exp
+
 //       | in_property
        ;
 
 
 exp_content ::= numeric_regrouped
             | bool_duo
+            | seq_val
+            | dict_val
             | identifiers
             | index;
 
@@ -376,7 +388,8 @@ print_var ::= PRINT all_types_val SEMICOL
             | PRINT exp SEMICOL;
 
 return ::= RETURN all_types_val SEMICOL
-         | RETURN exp SEMICOL;
+         | RETURN exp SEMICOL
+         | RETURN SEMICOL;
 
 //Flow handling
 
@@ -388,6 +401,7 @@ break ::= BREAK SEMICOL
 if_statement ::= IF LPAREN exp RPAREN THEN statements FI
                | IF LPAREN exp RPAREN THEN statements ELSE statements FI;
 
+main_statement ::= MAIN LBRA statements RBRA SEMICOL;
 
 //Statements
 
@@ -405,3 +419,4 @@ statement ::= exp SEMICOL
 
 statements ::= statements statement
               | statement;
+
