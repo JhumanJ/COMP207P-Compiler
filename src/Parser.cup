@@ -243,7 +243,7 @@ index ::= IDENTIFIER LAGRA numeric_val RAGRA
         | IDENTIFIER LAGRA IDENTIFIER RAGRA;
 //in
 //TODO: reparer in property
-in_property ::= all_types_val IN all_types_val;
+in_property ::= identifiers IN all_types_val;
 //            | all_types_val IN dict_val
 //            | all_types_val IN identifiers;
 //slice
@@ -289,13 +289,13 @@ func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPARE
 exp ::=  exp_content binary_operators exp_content
        | exp_content binary_operators exp
        | func_call binary_operators exp
+       | in_property binary_operators exp
+       | in_property
        | func_call
        | EXCLAM exp
        | LPAREN exp RPAREN
        | exp_content DOUBLE_COLON exp_content
        | exp_content DOUBLE_COLON exp
-
-//       | in_property
        ;
 
 
