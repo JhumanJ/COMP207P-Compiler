@@ -6,7 +6,7 @@ loop
     fi
     loop
         if (2 < j) then
-            break;
+            break; #test
         fi
         if (b[j] < a[i]) then
             break 2;

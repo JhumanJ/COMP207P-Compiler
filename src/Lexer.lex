@@ -80,9 +80,10 @@ Identifier = {Letter}{IdChar}*
 Integer = (0|[1-9]{Digit}*)
 
  /* comments */
-Comment = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment   = "/#" [^#] ~"#/" | "/#" "#"+ "/"
-EndOfLineComment     = "#" {InputCharacter}* {LineTerminator}?
+Comment = #.*(\n)? | \/#([^#]|#[^\/]|\n)*#\/
+//
+//TraditionalComment   = "/#" [^#] ~"#/" | "/#" "#"+ "/"
+//EndOfLineComment     = "#" [^#]* {LineTerminator}?
 
 /* character  */
 character = [:jletterdigit:] | \p{Punctuation}| " "
@@ -95,6 +96,9 @@ string = "\"" {character}* "\""
 %%
 
 <YYINITIAL> {
+
+ {Comment}     { /* do nothing */               }
+ {Whitespace}  { /* do nothing */               }
 
  "T"           { return symbol(sym.TRUE);      }
  "F"           { return symbol(sym.FALSE);      }
@@ -177,8 +181,6 @@ string = "\"" {character}* "\""
   {char}        { return symbol(sym.CHAR);       }
   {string}      { return symbol(sym.STRING);     }
 
-  {Comment}     { /* do nothing */               }
-  {Whitespace}  { /* do nothing */               }
 
 }
 
