@@ -95,8 +95,10 @@ nonterminal exp,exp_content, comparison_operators_num_bool, comparison_operators
 
 nonterminal global_code, var_assigment, read_var, print_var, return, loop, break,if_statement, var_init, main_statement, not_main_statements, not_main_statement;
 
-precedence left PLUS, MINUS;
-precedence left DIV, MULT;
+precedence left DOT, IN, COLON, AND, OR, DOUBLE_COLON;
+precedence left EXPO, DIV, MULT, PLUS, MINUS;
+precedence left LPAREN, RPAREN;
+
 
 global_code ::= main_statement
              | main_statement not_main_statements
@@ -107,7 +109,8 @@ not_main_statements ::= not_main_statement not_main_statements
                     | not_main_statement ;
 
 not_main_statement ::= func_definition
-                    | var_init; //Everything allowed out of main
+                    | var_init
+                    | type_definition; //Everything allowed out of main
 
 let_bind ::= LET IDENTIFIER:i EQUAL full_exp:e {:
                Node n = new Node("LET");
@@ -267,7 +270,9 @@ alias_definition ::= ALIAS all_types all_types SEMICOL;
 
 //TODO: add to global statements
 func_definition ::= FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA SEMICOL
-                | FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA COLON all_types SEMICOL;
+                | FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statements RBRA COLON all_types SEMICOL
+                | FDEF IDENTIFIER LPAREN  RPAREN LBRA statements RBRA SEMICOL
+                | FDEF IDENTIFIER LPAREN  RPAREN LBRA statements RBRA COLON all_types SEMICOL;
 
 parameters_list::= all_types_val
                 | exp
@@ -280,7 +285,7 @@ func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPARE
 
 //------------ 2.2 ---------
 
-//TODO: add more expressions (concat + in property)
+//TODO: add more expressions (in property)
 exp ::=  exp_content binary_operators exp_content
        | exp_content binary_operators exp
        | func_call binary_operators exp
@@ -300,6 +305,7 @@ exp_content ::= numeric_regrouped
             | dict_val
             | identifiers
             | index
+
             ;
 
 // Operators
