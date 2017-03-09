@@ -109,57 +109,6 @@ not_main_statements ::= not_main_statement not_main_statements
 not_main_statement ::= func_definition
                     | var_init; //Everything allowed out of main
 
-
-//top_level ::= statements:ss {:
-//                if(debug()) System.out.println((Node)ss);
-//              :}
-//            ;
-//
-//statements ::= statements:ss statement:s {:
-//                  Node n = (Node)ss;
-//                  n.addChild((Node)s);
-//                  RESULT = n;
-//               :}
-//             | /* empty */ {:
-//                  RESULT = new Node("Statements");
-//               :}
-//             ;
-
-//statement ::= let_bind:s {:
-//                RESULT = (Node)s;
-//              :}
-//            | full_exp:s {:
-//                RESULT = (Node)s;
-//              :}
-//            ;
-//
-//full_exp ::= simple_exp:e SEMICOL {: RESULT = (Node)e; :};
-//
-//simple_exp ::= INTEGER:i    {: RESULT = new Node(i); :}
-//             | IDENTIFIER:i {: RESULT = new Node(i); :}
-////             | CHAR:i {: RESULT = new Node(i); :}
-//             | simple_exp:e1 operator:o simple_exp:e2 {:
-//                  Node n = (Node)o;
-//                  n.addChild((Node)e1);
-//                  n.addChild((Node)e2);
-//                  RESULT = n;
-//               :}
-//             | LPAREN simple_exp:e RPAREN {:
-//                 Node n = new Node("parens");
-//                 n.addChild(new Node("("));
-//                 n.addChild((Node)e);
-//                 n.addChild(new Node(")"));
-//                 RESULT = (Node)e;
-//               :}
-//             ;
-//
-//operator ::= PLUS  {: RESULT = new Node("+"); :}
-//           | MINUS {: RESULT = new Node("-"); :}
-//           | MULT  {: RESULT = new Node("*"); :}
-//           | DIV   {: RESULT = new Node("/"); :}
-//           ;
-
-
 let_bind ::= LET IDENTIFIER:i EQUAL full_exp:e {:
                Node n = new Node("LET");
                n.addChild(new Node(i));
@@ -205,26 +154,26 @@ numeric_regrouped ::= int_number
             | rat_val
             | float_val;
 
-numeric_ops_plus ::= numeric_regrouped
-            | numeric_regrouped PLUS numeric_ops_plus
-            | numeric_regrouped MINUS numeric_ops_plus
-            | numeric_regrouped MULT numeric_ops_plus
-            | numeric_regrouped DIV numeric_ops_plus
-            | numeric_regrouped EXPO numeric_ops_plus
-            | numeric_regrouped EQ numeric_ops_plus
-            | numeric_regrouped DIFF numeric_ops_plus
-            | numeric_regrouped LCROCHET numeric_ops_plus
-            | numeric_regrouped INFEQ numeric_ops_plus;
-
-numeric_ops ::= numeric_regrouped PLUS numeric_ops_plus
-            | numeric_regrouped MINUS numeric_ops_plus
-            | numeric_regrouped MULT numeric_ops_plus
-            | numeric_regrouped DIV numeric_ops_plus
-            | numeric_regrouped EXPO numeric_ops_plus
-            | numeric_regrouped EQ numeric_ops_plus
-            | numeric_regrouped DIFF numeric_ops_plus
-            | numeric_regrouped LCROCHET numeric_ops_plus
-            | numeric_regrouped INFEQ numeric_ops_plus;
+//numeric_ops_plus ::= numeric_regrouped
+//            | numeric_regrouped PLUS numeric_ops_plus
+//            | numeric_regrouped MINUS numeric_ops_plus
+//            | numeric_regrouped MULT numeric_ops_plus
+//            | numeric_regrouped DIV numeric_ops_plus
+//            | numeric_regrouped EXPO numeric_ops_plus
+//            | numeric_regrouped EQ numeric_ops_plus
+//            | numeric_regrouped DIFF numeric_ops_plus
+//            | numeric_regrouped LCROCHET numeric_ops_plus
+//            | numeric_regrouped INFEQ numeric_ops_plus;
+//
+//numeric_ops ::= numeric_regrouped PLUS numeric_ops_plus
+//            | numeric_regrouped MINUS numeric_ops_plus
+//            | numeric_regrouped MULT numeric_ops_plus
+//            | numeric_regrouped DIV numeric_ops_plus
+//            | numeric_regrouped EXPO numeric_ops_plus
+//            | numeric_regrouped EQ numeric_ops_plus
+//            | numeric_regrouped DIFF numeric_ops_plus
+//            | numeric_regrouped LCROCHET numeric_ops_plus
+//            | numeric_regrouped INFEQ numeric_ops_plus;
 
 numeric_val ::= numeric_regrouped;
             //| numeric_ops;
@@ -239,7 +188,7 @@ all_types ::= TYPE_BOOL
             | TYPE_RAT
             | type_seq
             | type_dict
-            | IDENTIFIER;
+            | identifiers;
 
 // TODO: delete?
 all_types_val ::= CHAR
@@ -308,11 +257,11 @@ identifiers ::= IDENTIFIER
 
 //------------- 2.1 Declarations --------------
 
-declaration ::= IDENTIFIER COLON all_types;
+declaration ::= identifiers COLON all_types;
 declaration_list ::= declaration
                   | declaration COMMA declaration_list;
 
-type_definition ::= TDEF IDENTIFIER LBRA declaration_list RBRA SEMICOL;
+type_definition ::= TDEF identifiers LBRA declaration_list RBRA SEMICOL;
 
 alias_definition ::= ALIAS all_types all_types SEMICOL;
 
@@ -323,18 +272,19 @@ func_definition ::= FDEF IDENTIFIER LPAREN declaration_list RPAREN LBRA statemen
 parameters_list::= all_types_val
                 | exp
                 | all_types_val COMMA parameters_list
-                | exp COMMA parameters_list;
+                | exp COMMA parameters_list
+                |  ;
 
-func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN RPAREN
-           | QUESTION identifiers QUESTION IDENTIFIER LPAREN RPAREN
-           | QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPAREN
+func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPAREN
            | QUESTION identifiers QUESTION IDENTIFIER LPAREN parameters_list RPAREN;
 
 //------------ 2.2 ---------
 
 //TODO: add more expressions (concat + in property)
-exp ::=   exp_content binary_operators exp_content
+exp ::=  exp_content binary_operators exp_content
        | exp_content binary_operators exp
+       | func_call binary_operators exp
+
        | EXCLAM exp
        | LPAREN exp RPAREN
        | func_call
@@ -350,7 +300,8 @@ exp_content ::= numeric_regrouped
             | seq_val
             | dict_val
             | identifiers
-            | index;
+            | index
+            ;
 
 // Operators
 
@@ -415,7 +366,9 @@ statement ::= exp SEMICOL
             | return
             | loop
             | break
-            | if_statement;
+            | if_statement
+            | alias_definition
+            | type_definition;
 
 statements ::= statements statement
               | statement;
