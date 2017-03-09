@@ -288,6 +288,8 @@ func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPARE
 //TODO: add more expressions (in property)
 exp ::=  exp_content binary_operators exp_content
        | exp_content binary_operators exp
+       | LPAREN exp RPAREN binary_operators exp_content
+       | LPAREN exp RPAREN binary_operators exp
        | func_call binary_operators exp
        | in_property binary_operators exp
        | in_property
