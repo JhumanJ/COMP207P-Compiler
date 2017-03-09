@@ -284,10 +284,9 @@ func_call ::= QUESTION bool_val QUESTION IDENTIFIER LPAREN parameters_list RPARE
 exp ::=  exp_content binary_operators exp_content
        | exp_content binary_operators exp
        | func_call binary_operators exp
-
+       | func_call
        | EXCLAM exp
        | LPAREN exp RPAREN
-       | func_call
        | exp_content DOUBLE_COLON exp_content
        | exp_content DOUBLE_COLON exp
 
@@ -331,7 +330,8 @@ binary_operators ::= comparison_operators_num_bool
 var_assigment ::= identifiers EQUAL all_types_val SEMICOL
                 | identifiers EQUAL exp SEMICOL;
 
-var_init ::= identifiers COLON all_types EQUAL parameters_list SEMICOL;
+var_init ::= identifiers COLON all_types EQUAL parameters_list SEMICOL
+            | identifiers COLON all_types SEMICOL;
 
 read_var ::= READ identifiers SEMICOL;
 
@@ -350,7 +350,9 @@ break ::= BREAK SEMICOL
         | BREAK all_types_val SEMICOL;
 
 if_statement ::= IF LPAREN exp RPAREN THEN statements FI
-               | IF LPAREN exp RPAREN THEN statements ELSE statements FI;
+               | IF LPAREN exp RPAREN THEN statements ELSE statements FI
+               | IF LPAREN bool_val RPAREN THEN statements ELSE statements FI
+               | IF LPAREN bool_val RPAREN THEN statements FI;
 
 main_statement ::= MAIN LBRA statements RBRA SEMICOL;
 
