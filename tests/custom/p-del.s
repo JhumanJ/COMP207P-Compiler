@@ -11,7 +11,7 @@ loop
         if (b[j] < a[i]) then
             break 2;
         fi
-
+        j := j + 1;
     pool
     i := i + 1;
     j := 0;

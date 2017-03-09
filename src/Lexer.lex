@@ -82,7 +82,7 @@ Integer = (0|[1-9]{Digit}*)
  /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment}
 TraditionalComment   = "/#" [^#] ~"#/" | "/#" "#"+ "/"
-EndOfLineComment     = "#" [^#]* {LineTerminator}?
+EndOfLineComment     = "#" {InputCharacter}* {LineTerminator}?
 
 /* character  */
 character = [:jletterdigit:] | \p{Punctuation}| " "

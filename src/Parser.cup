@@ -280,6 +280,7 @@ seq_content ::=  all_types_val
 
 //len
 len_property ::= IDENTIFIER DOT LEN;
+
 //index
 index ::= IDENTIFIER LAGRA numeric_val RAGRA
         | IDENTIFIER LAGRA IDENTIFIER RAGRA;
@@ -336,7 +337,8 @@ exp::=   exp_content binary_operators exp_content
 
 exp_content ::= numeric_regrouped
             | bool_duo
-            | identifiers;
+            | identifiers
+            | index;
 
 // Operators
 
@@ -363,7 +365,8 @@ binary_operators ::= comparison_operators_num_bool
 
 // Assigment, var init, assigment....
 
-var_assigment ::= identifiers EQUAL all_types_val SEMICOL;
+var_assigment ::= identifiers EQUAL all_types_val SEMICOL
+                | identifiers EQUAL exp SEMICOL;
 
 var_init ::= identifiers COLON all_types EQUAL parameters_list SEMICOL;
 
